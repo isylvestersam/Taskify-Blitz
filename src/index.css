@@ -1,0 +1,27 @@
+@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
+@import "tailwindcss";
+
+@theme {
+  --color-yellow: #F19400;
+  --color-light: #FFB94B;
+  --color-gray: #17223B;
+  --shadow-soft:  0 -3px 6px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-medium: 0px 8px 12px rgba(0, 0, 0, 0.15);
+  --shadow-hard: 0px 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+* {
+  font-family: 'Poppins';
+}
+.flex-center {
+  @apply flex flex-col justify-center items-center
+}
+.animate {
+  @apply transition-all duration-300 ease-in-out 
+}
+.skale {
+  @apply hover:scale-[0.97]
+}
+button {
+  @apply hover:cursor-pointer
+}
