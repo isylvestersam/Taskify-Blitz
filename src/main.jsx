@@ -5,11 +5,35 @@ import './index.css'
 import App from './App.jsx'
 import LoginPage from './Pages/LoginPage.jsx';
 import NotFoundPage from './Pages/NotFoundPage.jsx';
+import SignUpPage from './Pages/SignUpPage.jsx';
+import CheckEmail from './Pages/CheckEmail.jsx';
+import AuthCallback from './Pages/AuthCallback.jsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <LoginPage/>
+    element: <SignUpPage />,
+    errorElement: <NotFoundPage />
+  },
+  {
+    path: '/signup',
+    element: <SignUpPage/>
+  },
+  {
+    path: '/login',
+    element: <LoginPage />
+  },
+  {
+    path: '/check-email',
+    element: <CheckEmail />
+  },
+  {
+    path: '/dashboard',
+    element: <App />
+  },
+  {
+    path: '/auth/callback',
+    element: <AuthCallback />
   }
 ])
 

@@ -1,37 +1,39 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { supabase } from "../../supabaseClient";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+
+
+const SignUpPage = () => {
+  const [loading, setLoading] = useState(false);
   const [isHidden, setHidden] = useState(true);
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState('');
   const [formErrors, setFormErrors] = useState({});
-  const [loading, setLoading] = useState(false)
-  
+  const navigate = useNavigate()
+
+
   function handleToggleHidden() {
     setHidden(prev => !prev)
   }
 
   const validateField = (field, value) => {
-    let error = "";
-    if (field === "email") {
-      if (!value) error = "Email is required";
-      else if (!/\S+@\S+\.\S+/.test(value)) error = "Email is invalid";
-    }
-    if (field === "password") {
-      if (!value) error = "Password is required";
-      else if (value.length < 6 || value.length > 24)
-        error = "Password must be between 6 and 24 characters";
-    }
-    setFormErrors(prev => ({ ...prev, [field]: error }));
-  };
+  let error = "";
+  if (field === "email") {
+    if (!value) error = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(value)) error = "Email is invalid";
+  }
+  if (field === "password") {
+    if (!value) error = "Password is required";
+    else if (value.length < 6 || value.length > 24)
+      error = "Password must be between 6 and 24 characters";
+  }
+  setFormErrors(prev => ({ ...prev, [field]: error }));
+};
 
+  const handleSignUp = async (e) => {
+  e.preventDefault();
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    
-     // Validate fields immediately
   const errors = {
     email: !email ? "Email is required" 
       : !/\S+@\S+\.\S+/.test(email) ? "Email is invalid" 
@@ -41,52 +43,48 @@ const LoginPage = () => {
       ? "Password must be between 6 and 24 characters" 
       : ""
   };
-  
 
   setFormErrors(errors);
 
   if (errors.email || errors.password) return;
 
-    setLoading(true)
+  setLoading(true);
 
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
 
-      if (error) {
-      setFormErrors(prev => ({...prev, server: error.message}))
-      } else {
-        console.log('Logged In', data);
-      }
-    } catch (err) {
-      setFormErrors(prev => ({...prev, server: 'Unexpected Error'}))
-    } finally {
-      setLoading(false)
+    if (error) {
+      setFormErrors(prev => ({ ...prev, server: error.message }));
+    } else {
+      console.log("Signed Up:", data);
+      // Optional: redirect to login page or dashboard
+      navigate("/check-email");
     }
-
-    
+  } catch (err) {
+    setFormErrors(prev => ({ ...prev, server: "Unexpected error" }));
+  } finally {
+    setLoading(false);
   }
+};
 
 
-
-  return ( <div className="container flex-center gap-3 mx-auto w-full lg:w-[40%] xl:w-[30%] px-12 h-screen">
+  return (
+    <div className="container flex-center gap-3 mx-auto w-full lg:w-[40%] xl:w-[30%] px-12 h-screen">
     <div className="flex-center gap-2 mb-12">
       <img src="images/logo.svg" alt="Taskify Logo" />
       <h3 className="text-yellow text-4xl font-semibold">Taskify Blitz</h3>
     </div>
 
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSignUp}
       className="text-white w-full flex flex-col gap-5">
       {/* Email Input */}
       <div className="flex flex-col w-full">
         <label htmlFor="email" className="mb-1">Email</label>
-        <div id="email" className={`bg-gray w-full flex justify-between gap-3 rounded-sm py-2 px-3 focus-within:outline-2 focus-within:outline-yellow  ${
-          formErrors.email ? `outline-2 outline-red-500 `
-          : ``
-        }`} >
+        <div id="email" className={`bg-gray w-full flex justify-between gap-3 rounded-sm py-2 px-3 focus-within:outline-2 focus-within:outline-yellow ${ formErrors.email ? 'outline-2 outline-red-500' : ''}`} >
           <input
           value={email}
           onChange={e => { setEmail(e.target.value); validateField("email", e.target.value); }}
@@ -104,13 +102,9 @@ const LoginPage = () => {
       {/* Password Input */}
       <div className="flex flex-col w-full">
         <label htmlFor="password" className="mb-1">Password</label>
-        <div id="password" type='password' className={`bg-gray w-full flex justify-between gap-3 rounded-sm py-2 px-3 focus-within:outline-2 focus-within:outline-yellow
-          ${
-          formErrors.password ? `outline-2 outline-red-500 `
-          : `border-transparent`
-        }
+        <div id="password" type='password' className={`bg-gray w-full flex justify-between gap-3 rounded-sm py-2 px-3 focus-within:outline-2 focus-within:outline-yellow ${ formErrors.password ? 'outline-2 outline-red-500' : ''}
           `}>
-          <input type={isHidden ? 'password' : 'text'} 
+          <input type={isHidden ? 'password' : 'text'}
           value={password}
           onChange={e => { setPassword(e.target.value); validateField("password", e.target.value); }}
             placeholder="Please enter your password" 
@@ -132,13 +126,11 @@ const LoginPage = () => {
           )
         }
       </div>
-      
 
-      {
-        formErrors.server && (
-          <p className="text-xs text-red-500 italic ml-auto">{formErrors.server}</p>
-        )
-      }
+      {/* Show Server Errors */}
+      {formErrors.server && (
+        <p className="text-xs mt-1 text-red-500 italic">{formErrors.server}</p>
+      )}
 
       <button
         disabled={loading}
@@ -152,15 +144,17 @@ const LoginPage = () => {
           )
         }
         {
-          loading ? 'Logging in' : 'Login'
+          loading ? 'Signing Up' : 'Sign Up'
         }
       </button>
+      <span className="flex gap-1 text-sm ml-auto">
+        <p>Have an account?</p>
+        <Link to='/login' className="underline text-yellow" >Sign In</Link>
+      </span>
     </form>
-    <span className="flex gap-1 text-sm ml-auto">
-      <p className="text-white">New User?</p>
-      <Link to='/signup' className="underline text-yellow" >Sign Up</Link>
-    </span>
-  </div> );
+  </div> 
+
+   );
 }
  
-export default LoginPage;
+export default SignUpPage;

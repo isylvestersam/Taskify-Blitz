@@ -5,7 +5,7 @@ const NotFoundPage = () => {
     <div className="flex-center gap-1">
       <img src="images/not-found.png" alt="error image" />
       <h3 className="text-yellow text-5xl font-semibold">404 Error</h3>
-      <p>We couldn't find the page you're looking for</p>
+      <p className="text-white">We couldn't find the page you're looking for</p>
     </div>
     <Link 
       to='/'
