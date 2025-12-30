@@ -11,6 +11,7 @@ const SignUpPage = () => {
   const [password, setPassword] = useState('');
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate()
+  localStorage.setItem("pendingEmail", email);
 
 
   function handleToggleHidden() {
@@ -52,16 +53,20 @@ const SignUpPage = () => {
 
   try {
     const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    email,
+    password,
+    options: {
+      emailRedirectTo: 'http://localhost:5173/auth/callback'
+    }
+  });
+
 
     if (error) {
       setFormErrors(prev => ({ ...prev, server: error.message }));
     } else {
       console.log("Signed Up:", data);
       // Optional: redirect to login page or dashboard
-      navigate("/check-email");
+      navigate("/check-email", { state: { email } } );
     }
   } catch (err) {
     setFormErrors(prev => ({ ...prev, server: "Unexpected error" }));

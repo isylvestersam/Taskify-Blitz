@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import './index.css'
 import App from './App.jsx'
 import LoginPage from './Pages/LoginPage.jsx';
@@ -12,7 +12,7 @@ import AuthCallback from './Pages/AuthCallback.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <SignUpPage />,
+    element: <Navigate to='/signup' replace />,
     errorElement: <NotFoundPage />
   },
   {

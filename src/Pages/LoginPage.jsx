@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { supabase } from "../../supabaseClient";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [isHidden, setHidden] = useState(true);
@@ -8,6 +9,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('')
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
   
   function handleToggleHidden() {
     setHidden(prev => !prev)
@@ -59,6 +61,7 @@ const LoginPage = () => {
       setFormErrors(prev => ({...prev, server: error.message}))
       } else {
         console.log('Logged In', data);
+        navigate('/dashboard')
       }
     } catch (err) {
       setFormErrors(prev => ({...prev, server: 'Unexpected Error'}))
