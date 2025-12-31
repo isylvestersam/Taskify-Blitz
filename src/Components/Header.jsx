@@ -4,7 +4,7 @@ const Header = () => {
   return ( <div className="w-full flex flex-col justify-start gap-3 items-start md:flex-row md:justify-between md:items-center" >
     <div className="flex flex-col gap-1 lg:gap-2">
       <span className="flex items-center gap-3 ">
-        <img src="images/logo.svg" alt="Logo" className="w-9 lg:w-12" />
+        <img src="/images/logo.svg" alt="Logo" className="w-9 lg:w-10" />
         <h3 className="text-yellow text-xl lg:text-2xl">Taskify Blitz</h3>
       </span>
       <h3 className="text-gray-400 text-sm">Track your tasks, earn points, and achieve your goals</h3>
