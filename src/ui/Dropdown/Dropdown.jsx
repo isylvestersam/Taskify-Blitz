@@ -1,14 +1,16 @@
 import { useState, useRef, useEffect, useContext } from "react";
-import { AppContext } from "../Context/AppContext";
-import getSetter from "../util/getSetter";
+import { AppContext } from "../../Context/AppContext";
+import getSetter from "../../util/getSetter";
+import { dropdownMenus } from "./config";
 
 
-const Dropdown = ( { menu, valueKey } ) => {
+const Dropdown = ( { field } ) => {
   const context = useContext(AppContext)
-  const selected = context[valueKey];
-  const setSelected = getSetter(context, valueKey)
+  const selected = context[field];
+  const setSelected = getSetter(context, field)
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const menu = dropdownMenus[field] || []
 
   function handleSelectMenu(option) {
     if (setSelected) setSelected(option);
