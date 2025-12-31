@@ -2,11 +2,13 @@ import { AppContext } from "../Context/AppContext";
 
 const getSetter = (context, key) => {
   switch (key) {
-    case 'month': return AppContext.setMonth;
-    case 'year': return AppContext.setYear;
-    case 'week': return AppContext.setWeek;
+    case 'monthIndex': return context.setMonthIndex;
+    case 'year': return context.setYear;
+    case 'week': return context.setWeek;
+    case 'occurence': return context.setOccurence;
+    case 'day': return context.setDay;
+    case 'specificDays': return context.setSpecificDays
     default: return null
   }
 }
 export default getSetter
-
