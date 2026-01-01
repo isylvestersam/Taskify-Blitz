@@ -1,14 +1,23 @@
 import { useState, React } from 'react'
-import LoginPage from './Pages/LoginPage'
-
 import './index.css'
+import Dashboard from './Pages/Dashboard'
+import { AppProvider } from './Contexts/AppContext'
+import TaskFormContextProvider from './Contexts/TaskFormContext'
+import TaskProvider from './Contexts/TaskContext'
+
 
 function App() {
 
   return (
-    <>
-      
-    </>
+    
+      <AppProvider>
+        <TaskFormContextProvider>
+          <TaskProvider>
+            <Dashboard />
+          </TaskProvider>
+        </TaskFormContextProvider>
+      </AppProvider>
+
   )
 }
 
