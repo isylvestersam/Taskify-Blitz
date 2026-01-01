@@ -11,7 +11,7 @@ export const AppProvider = ({ children }) => {
   const [openDropdown, setOpenDropdown] = useState(null);
 
   // Task Creation
-  const [occurence, setOccurence] = useState('Daily');
+  const [occurrence, setoccurrence] = useState('Daily');
   const [day, setDay] = useState('Mon');
   const [specificDays, setSpecificDays]= useState([]);
 
@@ -33,7 +33,7 @@ const closeNoteModal = () => setIsNoteModalOpen(false)
         week, setWeek,
         monthIndex, setMonthIndex,
         year, setYear,
-        occurence, setOccurence,
+        occurrence, setoccurrence,
         day, setDay,
         specificDays, setSpecificDays,
         openDropdown, setOpenDropdown,

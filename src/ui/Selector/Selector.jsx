@@ -12,7 +12,8 @@ const Selector = () => {
     <div className="flex gap-5">
     {
       timeframeData.map((TD) => (
-          <button 
+          <button
+          key={TD}
             onClick={() => setTimeframe(TD)}
             className={
             `${timeframe === TD ? 'bg-yellow text-[#081023] animate '

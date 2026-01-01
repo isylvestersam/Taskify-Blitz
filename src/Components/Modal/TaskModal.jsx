@@ -4,59 +4,122 @@ import ColorSelector from "../../ui/ColorSelector/ColorSelector";
 import Dropdown from "../../ui/Dropdown/Dropdown";
 import { AppContext } from "../../Contexts/AppContext";
 import DayChecker from "../../ui/DayChecker";
+import { useTaskFormContext } from "../../Contexts/TaskFormContext";
+import { useTasks } from "../../Contexts/TaskContext";
 
 
 const TaskModal = () => {
-    const { occurence, closeTaskModal, isTaskModalOpen } = useContext(AppContext)
+    const { occurrence, closeTaskModal, isTaskModalOpen } = useContext(AppContext);
+    const { createTask } = useTasks()
+    const { name, setName, category, setCategory, maxPoints, setMaxPoints, color, setColor, occurrenceType, setOccurrenceType, occurrenceDays, setOccurrenceDays, error, setError, resetForm } = useTaskFormContext()
+
+    const submitFunc = async () => {
+      console.log("Submit triggered!", { name, category, maxPoints, color, occurrenceType, occurrenceDays })
+      console.log(error);
+      
+      const taskData = {
+        name,
+        category,
+        maxPoints: Number(maxPoints),
+        color,
+        occurrence: {
+          type: occurrenceType,
+          days: occurrenceDays
+        }
+      }
+
+      const result = await createTask(taskData); //From TaskContext
+      if (result.success) {
+        resetForm();
+        closeTaskModal()
+      } else {
+        setError(result.error)
+      }
+    }
 
   return ( <Modal
     open={isTaskModalOpen}
     onClose={closeTaskModal}
     confirmBtn="Create Task"
+    onConfirm={submitFunc}
   >
     <div className="py-4 px-7">
       <h3 className="text-amber-400 mb-7 text-xl font-medium">Add New Task</h3>
 
-      <form action="" className="w-full flex flex-col gap-5 text-gray-200">
+      <div className="w-full flex flex-col gap-5 text-gray-200">
         <label >
           <p className="text-gray-200 mb-1 text-sm">Task Name</p>
-          <input type="text" className="border placeholder:text-gray-400/40 placeholder:text-sm py-1 px-3 w-full border-slate-500 rounded-md" placeholder="e.g Morning Workout" />
+          <input 
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            type="text" 
+            className="border placeholder:text-gray-400/40 placeholder:text-sm py-1 px-3 w-full border-slate-500 rounded-md" placeholder="e.g Morning Workout" />
         </label>
         <label >
           <p className="text-gray-200 mb-1 text-sm">Category</p>
-          <input type="text" className="border placeholder:text-gray-400/40 placeholder:text-sm py-1 px-3 w-full border-slate-500 rounded-md" placeholder="e.g Fitness" />
+          <input 
+            value={category}
+            onChange={(e) => setCategory(e.target.value) }
+            type="text" 
+            className="border placeholder:text-gray-400/40 placeholder:text-sm py-1 px-3 w-full border-slate-500 rounded-md" 
+            placeholder="e.g Fitness" />
         </label>
         <label >
-          <p className="text-gray-200 mb-1 text-sm">Task Name</p>
-          <input type="text" className="border placeholder:text-gray-400/40 placeholder:text-sm py-1 px-3 w-full border-slate-500 rounded-md" defaultValue={10} />
+          <p className="text-gray-200 mb-1 text-sm">Max Points</p>
+          <input
+            value={maxPoints}
+            onChange={(e) => setMaxPoints(e.target.value)}
+            type="text" 
+            className="border placeholder:text-gray-400/40 placeholder:text-sm py-1 px-3 w-full border-slate-500 rounded-md" />
         </label>
         
         <div>
           <h3 className="mb-1 text-sm">Color</h3>
-          <ColorSelector />
+          <ColorSelector
+            setColor={setColor}
+            color={color}
+          />
         </div>
 
         <div>
           <p className="mb-1 text-sm">Occurrence Type</p>
-          <Dropdown field={'occurence'} width='full' />
+          <Dropdown 
+            field={'occurrence'} 
+            width='full'
+            value={occurrenceType}
+            onChange={setOccurrenceType}
+            />
         </div>
 
         {
-          occurence === 'Weekly' && (
+          occurrenceType === 'Weekly'  && (
             <div>
-              <Dropdown field={'day'} width='full' />
+              <Dropdown 
+                field={'day'} 
+                width='full'
+                value={occurrenceDays[0] || ''}
+                onChange={(val) => setOccurrenceDays([val])}
+                />
             </div>
           )
         }
         {
-          occurence === 'Specific Days' && (
+          occurrenceType === 'Specific Days' && (
             <div>
               <p className="mb-1 text-sm">Occurrence Days</p>
-              <DayChecker />
+              <DayChecker
+                value={occurrenceDays}
+                onChange={setOccurrenceDays}
+              />
             </div>
           )
         }
-      </form>
+      </div>
+      {
+        error && (
+          <p className="mt-3 -mb-5 text-red-500 italic text-sm">{error}!</p>
+        )
+      }
     </div>
   </Modal> );
 }

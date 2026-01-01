@@ -4,10 +4,10 @@ import getSetter from "../../util/getSetter";
 import { dropdownMenus, months, getWeeksForMonth } from "./config";
 
 
-const Dropdown = ( { field, width } ) => {
+const Dropdown = ( { field, width, value, onChange } ) => {
   const context = useContext(AppContext)
-  const selected = context[field];
-  const setSelected = getSetter(context, field)
+  const selected = value ?? context[field];
+  const setSelected = onChange?? getSetter(context, field)
   const isOpen = context.openDropdown === field
   const dropdownRef = useRef(null);
   const menu = field === 'week'

@@ -5,9 +5,9 @@ const getSetter = (context, key) => {
     case 'monthIndex': return context.setMonthIndex;
     case 'year': return context.setYear;
     case 'week': return context.setWeek;
-    case 'occurence': return context.setOccurence;
+    case 'occurrence': return context.setoccurrence;
     case 'day': return context.setDay;
-    case 'specificDays': return context.setSpecificDays
+    case 'Specific Days': return context.setSpecificDays
     default: return null
   }
 }

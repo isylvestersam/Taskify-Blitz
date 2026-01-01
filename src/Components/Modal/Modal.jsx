@@ -1,9 +1,8 @@
 import { useEffect } from "react"
 import { createPortal } from "react-dom"
 
-const Modal = ({ open, onClose, children, confirmBtn = "Save" }) => {
-  if (!open) return null
-
+const Modal = ({ open, onClose, children, confirmBtn = "Save", onConfirm }) => {
+  
   // Disable Scroll when modal is open
   useEffect(() => {
     if (open) {
@@ -11,11 +10,18 @@ const Modal = ({ open, onClose, children, confirmBtn = "Save" }) => {
     } else {
       document.body.style.overflow = ''
     }
-
+    
     return () => {
       document.body.style.overflow = ''
     }
   }, [open])  
+  
+  if (!open) return null;
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onConfirm?.(e)
+  }
 
   return createPortal(
     // Backdrop
@@ -26,7 +32,9 @@ const Modal = ({ open, onClose, children, confirmBtn = "Save" }) => {
       }}
     >
       {/* Modal content */}
-      <div className="relative bg-slate-900 w-[80%] max-h-[90vh] lg:w-[40%] rounded-xl shadow-xl px-5 py-7 flex flex-col overflow-auto">
+      <form 
+        onSubmit={handleSubmit}
+        className="relative bg-slate-900 w-[80%] max-h-[90vh] lg:w-[40%] rounded-xl shadow-xl px-5 py-7 flex flex-col overflow-auto">
         {/* Body */}
         <div className="flex-1 overflow-auto mb-4 scrollbar-auto">{children}</div>
 
@@ -40,13 +48,13 @@ const Modal = ({ open, onClose, children, confirmBtn = "Save" }) => {
             Cancel
           </button>
           <button
-            type="button"
+            type="submit"
             className="bg-amber-500 text-slate-900 px-3 rounded-md hover:bg-amber-500/70 w-full"
           >
             {confirmBtn}
           </button>
         </div>
-      </div>
+      </form>
     </div>,
     document.body
   )

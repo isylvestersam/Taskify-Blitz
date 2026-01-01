@@ -4,15 +4,14 @@ import { AppContext } from "../Contexts/AppContext";
 
 
 
-const DayChecker = () => {
-  const { specificDays, setSpecificDays } = useContext(AppContext)
+const DayChecker = ( { value = [], onChange } ) => {
   
 
   const toggleDay = (day) => {
-    setSpecificDays((prev) =>
-      prev.includes(day)
-        ? prev.filter((d) => d !== day) // remove if already selected
-        : [...prev, day] // add if not selected
+    onChange((value) =>
+      value.includes(day)
+        ? value.filter((d) => d !== day) // remove if already selected
+        : [...value, day] // add if not selected
     );
   };
 
@@ -24,7 +23,7 @@ const DayChecker = () => {
           type="button"
           onClick={ () => toggleDay(day) }
           className={`py-0.5 px-2 rounded-md text-sm ${
-            specificDays.includes(day)  ? 'bg-amber-500 text-white' : 'bg-slate-800 text-gray-200'
+            value.includes(day)  ? 'bg-amber-500 text-white' : 'bg-slate-800 text-gray-200'
           }`}>
           { day }
         </button>

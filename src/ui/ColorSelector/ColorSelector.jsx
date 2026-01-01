@@ -1,14 +1,17 @@
 import { colors } from "./config";
 
 
-const ColorSelector = () => {
+const ColorSelector = ( { color, setColor } ) => {
   return ( <div className="flex flex-wrap gap-2">
     {
-      colors.map((color) =>(
-        <button className={`bg-${color} w-8 h-8 rounded-full`}
-        key={color}
+      colors.map((c) =>(
+        <button className={`w-8 h-8 rounded-full ${
+          c === color ? 'outline-3 outline-white' : ''
+        } `}
+        onClick={() => setColor(c)}
+        key={c}
         type="button"
-        style={ {backgroundColor: color} }
+        style={ {backgroundColor: c} }
         >
           
         </button>

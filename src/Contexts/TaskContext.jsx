@@ -1,4 +1,6 @@
 import { createContext, useContext, useReducer, useState } from 'react';
+import { supabase } from '../../supabaseClient';
+import { validateCreateTask, validateEditTask } from '../Validators/taskvalidator';
 
 
 const TaskContext = createContext(null);
@@ -18,8 +20,7 @@ const TaskContext = createContext(null);
         return [
           ...state,
           {
-            ...action.payload,
-            id: crypto.randomUUID() 
+            ...action.payload, 
           }
         ]
       case ACTIONS.EDIT_TASK: 
@@ -37,73 +38,83 @@ const TaskContext = createContext(null);
 
   // Provider
   const TaskProvider = ({ children }) => {
-    const [tasks, dispatch] = useReducer(taskReducer, [])
+  const [tasks, dispatch] = useReducer(taskReducer, [])
 
-  // Action Helpers
-  const createTask = (task) => {
-    if (!task.name || task.name.trim() === '') {
-      return { success: false, error: 'Task must have a name' }
-    }
-    if (!task.category || task.category.trim() === '' ){
-      return { success: false, error: 'Task must have a Category' }
-    }
-    if (!task.maxPoints || typeof task.maxPoints !== 'number' || task.maxPoints <= 0 ){
-      return { success: false, error: 'Task must have a valid occurrence type' }
-    }
-    if (task.occurrence.type === 'specificDays') {
-      if (!Array.isArray(task.occurrence.days) || task.occurrence.days.some(d => d < 0 || d > 6)) { 
-        return { success: false, error: "specificDays must have an array of weekdays (0-6)" }
+  const createTask = async (task) => {
+    const validation = validateCreateTask(task);
+    console.log('Validation result:', validateCreateTask(task))
+
+    if (!validation.success) return validation
+
+    // Insert into Supabase
+    const { data, error } = await supabase
+      .from('tasks')
+      .insert([{ ...task }])
+      .select()
+      .single();
+
+      if (error) {
+        console.error('Supabase insert error:', error)
+        return { success: false, error: error.message }
       }
-    }
-     // Defaults
-    if (!task.color) task.color = "#5C6AC4";
 
-    dispatch({ type: ACTIONS.CREATE_TASK, payload: task })
-
+    dispatch({ type: ACTIONS.CREATE_TASK, payload: data })
+    console.log('Task Created');
+    
     return { success: true }
   }
+
+  
+
+
+  // Edit Task
+  const editTask = async (id, updates) => {
+    const validation = validateEditTask(updates);
+    if (!validation.success) return validation;
+
+    // Update Supabase data
+    const { data, error } = await supabase
+    .from('tasks')
+    .update({ ...validation.updates })
+    .eq('id', id)
+    .select()
+    .single()
+
+    if (error) return { success: false, error: error.message }
+
+
+    dispatch({ type: ACTIONS.EDIT_TASK, payload: { id, updates: data } })
+    return { success: true }
   }
 
-  const editTask = (id, updates) => {
-      // Validation for provided fields
-    if (updates.name !== undefined && updates.name.trim() === "") {
-      return { success: false, error: "Task name cannot be empty" }
-    }
-    
-    if (updates.category !== undefined && updates.category.trim() === "") {
-      return { success: false, error: "Task category cannot be empty" }
-    }
-    if (updates.maxPoints !== undefined && (typeof updates.maxPoints !== "number" || updates.maxPoints <= 0)) {
-      return { success: false, error: "maxPoints must be a number greater than 0" }
-    }
-    if (updates.occurrence !== undefined) {
-      if (!["daily","weekly","specificDays"].includes(updates.occurrence.type)) {
-        return { success: false, error: "Invalid occurrence type" }
-      }
-      if (updates.occurrence.type === "specificDays" && (!Array.isArray(updates.occurrence.days) || updates.occurrence.days.some(d => d < 0 || d > 6))) {
-        updates.occurrence.days = [] // default empty array for safety
-      }
-    }
+  // Delete Task
+  const deleteTask = async (id) => {
+    if (!id) return { success: false, error: 'Task ID is required' }
 
-    // Set defaults if fields are missing
-    if (updates.color === undefined) updates.color = "#5C6AC4";
-    if (updates.occurrence?.type === "specificDays" && updates.occurrence.days === undefined) updates.occurrence.days = [];
+    // Delete from Supabase
+    const { error } = await supabase
+    .from('tasks')
+    .delete()
+    .eq('id', id)
 
-    dispatch({ type: ACTIONS.EDIT_TASK, payload: { id, updates } })
+    if (error) return { success: false, error: error.message }
+
+    // Update Local
+    dispatch({ type: ACTIONS.DELETE_TASK, payload: { id } })
     return { success: true }
-    
-    dispatch({ type: ACTIONS.EDIT_TASK, payload: { id, updates } })}
+  }
 
-  const deleteTask = (id) => dispatch({ type: ACTIONS.DELETE_TASK, payload: { id } })
-
-
-    return ( 
-      <TaskContext.Provider
-        value={ {tasks, createTask, editTask, deleteTask} }
-        >
+  return ( 
+    <TaskContext.Provider
+      value={ {tasks, createTask, editTask, deleteTask} }
+      >
         { children }
-      </TaskContext.Provider>
+    </TaskContext.Provider>
     );
+
+}
+
+
 
 
 export default TaskProvider;
