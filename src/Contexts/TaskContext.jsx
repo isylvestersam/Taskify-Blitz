@@ -46,10 +46,14 @@ const TaskContext = createContext(null);
 
     if (!validation.success) return validation
 
+    const { data: { user } } = await supabase.auth.getUser();
+
     // Insert into Supabase
     const { data, error } = await supabase
       .from('tasks')
-      .insert([{ ...task }])
+      .insert([{ ...task,
+        user_id: user.id
+      }])
       .select()
       .single();
 

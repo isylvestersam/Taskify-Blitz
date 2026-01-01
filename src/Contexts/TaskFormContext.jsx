@@ -10,7 +10,7 @@ const TaskFormContextProvider = ( { children } ) => {
   const [category, setCategory] = useState('');
   const [maxPoints, setMaxPoints] = useState(10);
   const [color, setColor] = useState('#5C6AC4');
-  const [occurrenceType, setOccurrenceType] = useState('daily');
+  const [occurrenceType, setOccurrenceType] = useState('Daily');
   const [occurrenceDays, setOccurrenceDays] = useState([]);
   const [error, setError] = useState('');
 
@@ -20,7 +20,7 @@ const TaskFormContextProvider = ( { children } ) => {
     setCategory('');
     setMaxPoints(10);
     setColor('#5C6AC4');
-    setOccurrenceType('daily');
+    setOccurrenceType('Daily');
     setOccurrenceDays([]);
     setError('');
   };

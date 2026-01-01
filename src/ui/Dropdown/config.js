@@ -5,7 +5,7 @@ export const years = [2026];
 export const dropdownMenus = {
   monthIndex: months.map((_, i) => i),
   year: years,
-  occurrence: ['daily', 'Weekly', 'Specific Days'],
+  occurrence: ['Daily', 'Weekly', 'Specific Days'],
   day: ['Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 }
 

@@ -18,7 +18,7 @@ const Selector = () => {
             className={
             `${timeframe === TD ? 'bg-yellow text-[#081023] animate '
             : 'bg-transparent text-gray-300 hover:text-amber-300 hover:bg-gray-300/20'}
-            py-0.5 px-3 rounded-lg text-sm
+            py-0.5 px-3 rounded-lg text-sm 
             `
           }>
             <p className="py-1">

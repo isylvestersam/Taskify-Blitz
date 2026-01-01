@@ -22,7 +22,7 @@ const DayChecker = ( { value = [], onChange } ) => {
           key={day}
           type="button"
           onClick={ () => toggleDay(day) }
-          className={`py-0.5 px-2 rounded-md text-sm ${
+          className={`py-0.5 px-2 rounded-md text-base ${
             value.includes(day)  ? 'bg-amber-500 text-white' : 'bg-slate-800 text-gray-200'
           }`}>
           { day }

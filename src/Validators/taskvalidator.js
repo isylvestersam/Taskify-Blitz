@@ -14,7 +14,7 @@ export const validateCreateTask = (task) => {
     return { success: false, error: 'Task must have valid maxPoints' };
   }
 
-  if (!task.occurrence || !['daily','Weekly','Specific Days'].includes(task.occurrence.type)) {
+  if (!task.occurrence || !['Daily','Weekly','Specific Days'].includes(task.occurrence.type)) {
     return { success: false, error: 'Task must have a valid occurrence type' };
   }
 
@@ -47,7 +47,7 @@ export const validateEditTask = (updates) => {
   }
 
   if (updates.occurrence !== undefined) {
-    if (!['daily','Weekly','Specific Days'].includes(updates.occurrence.type)) {
+    if ([!'Daily','Weekly','Specific Days'].includes(updates.occurrence.type)) {
       return { success: false, error: 'Invalid occurrence type' };
     }
 
