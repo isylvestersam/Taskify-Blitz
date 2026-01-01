@@ -46,3 +46,37 @@ button {
   background-color: rgba(245, 158, 11, 0.85);
 }
 
+
+/* Hide scrollbar by default */
+.scrollbar-auto {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: transparent transparent; /* Firefox */
+}
+
+/* Webkit browsers */
+.scrollbar-auto::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-auto::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 8px;
+}
+
+.scrollbar-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Show scrollbar on hover */
+.scrollbar-auto:hover {
+  scrollbar-color: rgba(250, 204, 21, 0.6) rgba(15, 23, 42, 0.3); /* Firefox */
+}
+
+.scrollbar-auto:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(250, 204, 21, 0.6); /* amber */
+}
+
+.scrollbar-auto:hover::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.3); /* subtle track */
+}

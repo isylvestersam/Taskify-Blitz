@@ -8,7 +8,7 @@ import { months } from "../ui/Dropdown/config";
 const WeeklySelector = () => {
   const { monthIndex, week, year } = useContext(AppContext)
 
-  return ( <div className="flex flex-wrap jusitfy-between items-center gap-2  pb-2 -center custom-scrollbar">
+  return ( <div className="flex flex-wrap jusitfy-between items-center gap-2   -center custom-scrollbar">
     <Dropdown field={'monthIndex'} />
     <Dropdown field={'week'} />
     <Dropdown field={'year'} />

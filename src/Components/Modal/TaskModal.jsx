@@ -38,13 +38,13 @@ const TaskModal = () => {
 
         <div>
           <p className="mb-1 text-sm">Occurrence Type</p>
-          <Dropdown field={'occurence'} />
+          <Dropdown field={'occurence'} width='full' />
         </div>
 
         {
           occurence === 'Weekly' && (
             <div>
-              <Dropdown field={'day'} />
+              <Dropdown field={'day'} width='full' />
             </div>
           )
         }

@@ -29,8 +29,8 @@ const Dashboard = () => {
             <Showcase />
             <Selector />
 
-            <AddNewTask />
           </div>
+            <AddNewTask />
       
   </div> );
 }

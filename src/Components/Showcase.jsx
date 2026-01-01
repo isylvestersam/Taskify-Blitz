@@ -10,7 +10,7 @@ const Showcase = () => {
   const { timeframe } = useContext(AppContext)
 
 
-  return ( <div className="overflow-">
+  return ( <div className="flex items-center">
     {
       timeframe === 'Daily' && (
         <Tag 

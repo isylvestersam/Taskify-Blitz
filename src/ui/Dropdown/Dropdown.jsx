@@ -4,7 +4,7 @@ import getSetter from "../../util/getSetter";
 import { dropdownMenus, months, getWeeksForMonth } from "./config";
 
 
-const Dropdown = ( { field } ) => {
+const Dropdown = ( { field, width } ) => {
   const context = useContext(AppContext)
   const selected = context[field];
   const setSelected = getSetter(context, field)
@@ -46,7 +46,12 @@ const Dropdown = ( { field } ) => {
 
   return ( <div 
     ref={dropdownRef}
-    className=" relative w-fit" >
+    className={`${
+      width === 'full' 
+      ? 'w-full'
+      : 'w-fit'
+
+    } relative`} >
     <button
     type="button"
       onClick={ (e) => {
@@ -54,7 +59,11 @@ const Dropdown = ( { field } ) => {
         handleToggleDropdown()
       }
       }
-      className="flex text-gray-200 gap-6 bg-[#1D293D] py-1 px-3 rounded-md border border-gray-700 hover:bg-[#2d3a50] animate"
+      className={`flex text-gray-200 gap-6 bg-[#1D293D] py-1 px-3 rounded-md border border-gray-700 hover:bg-[#2d3a50] animate 
+        ${width === 'full' ? 'w-full justify-between'
+          : ''
+        }
+        `}
       >
       <p>
         {field === 'monthIndex' ? months[selected] : selected}
@@ -65,7 +74,11 @@ const Dropdown = ( { field } ) => {
     </button>
     {
       isOpen && (
-        <div className="absolute z-50 flex min-w-36 flex-col gap-1 items-start text-gray-200 bg-[#1D293D] py-1 px-1 text-sm rounded-md border border-gray-700 top-10 left-0">
+        <div className={`absolute z-50 flex min-w-36 flex-col gap-1 items-start text-gray-200 bg-[#1D293D] py-1 px-1 text-sm rounded-md border border-gray-700 top-10 left-0 
+          ${width === 'full' ? 'w-full justify-between'
+          : ''
+        }
+        `}>
           {
             menu.map((option) => (
               <button 
