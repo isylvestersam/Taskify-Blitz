@@ -1,4 +1,4 @@
-import { AppContext } from "../Context/AppContext";
+import { AppContext } from "../Contexts/AppContext";
 
 const getSetter = (context, key) => {
   switch (key) {

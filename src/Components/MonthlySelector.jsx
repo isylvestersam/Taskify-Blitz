@@ -2,7 +2,7 @@ import Dropdown from "../ui/Dropdown/Dropdown";
 import Tag from "../ui/Tag/Tag";
 import { months } from "../ui/Dropdown/config";
 import { useContext } from "react";
-import { AppContext } from "../Context/AppContext";
+import { AppContext } from "../Contexts/AppContext";
 
 
 const MonthlySelector = () => {

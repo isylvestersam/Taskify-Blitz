@@ -1,7 +1,7 @@
 import { useState, React } from 'react'
 import './index.css'
 import Dashboard from './Pages/Dashboard'
-import { AppProvider } from './Context/AppContext'
+import { AppProvider } from './Contexts/AppContext'
 
 
 function App() {

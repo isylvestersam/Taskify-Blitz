@@ -12,6 +12,7 @@ import WeeklySelector from '../Components/WeeklySelector';
 import MonthlySelector from '../Components/MonthlySelector';
 import YearlySelector from '../Components/YearlySelector';
 import Showcase from '../Components/ShowCase';
+import AddNewTask from '../Components/Modal/TaskModal';
 
 
 const Dashboard = () => {
@@ -24,9 +25,11 @@ const Dashboard = () => {
           ))
           }
           </div>
-          <div className='flex flex-col md:flex-row md:justify-between my-4'>
+          <div className='flex flex-col  gap-6 md:items-center md:flex-col-reverse lg:flex-row lg:justify-between my-4 p-3 card'>
             <Showcase />
             <Selector />
+
+            <AddNewTask />
           </div>
       
   </div> );

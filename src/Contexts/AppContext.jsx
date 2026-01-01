@@ -11,9 +11,20 @@ export const AppProvider = ({ children }) => {
   const [openDropdown, setOpenDropdown] = useState(null);
 
   // Task Creation
-  const [occurrence, setOccurrence] = useState('Daily');
+  const [occurence, setOccurence] = useState('Daily');
   const [day, setDay] = useState('Mon');
   const [specificDays, setSpecificDays]= useState([]);
+
+  // Modals
+const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
+const [isNoteModalOpen, setIsNoteModalOpen] = useState(false)
+
+const openTaskModal = () => setIsTaskModalOpen(true)
+const closeTaskModal = () => setIsTaskModalOpen(false)
+
+const openNoteModal = () => setIsNoteModalOpen(true)
+const closeNoteModal = () => setIsNoteModalOpen(false)
+
 
   return (
   <AppContext.Provider
@@ -22,10 +33,12 @@ export const AppProvider = ({ children }) => {
         week, setWeek,
         monthIndex, setMonthIndex,
         year, setYear,
-        occurrence, setOccurrence,
+        occurence, setOccurence,
         day, setDay,
         specificDays, setSpecificDays,
-        openDropdown, setOpenDropdown
+        openDropdown, setOpenDropdown,
+        isNoteModalOpen, openNoteModal, closeNoteModal,
+        isTaskModalOpen, openTaskModal, closeTaskModal
         }}
       >
       { children }

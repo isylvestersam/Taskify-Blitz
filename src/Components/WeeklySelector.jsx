@@ -1,6 +1,6 @@
 import Dropdown from "../ui/Dropdown/Dropdown";
 import Tag from "../ui/Tag/Tag";
-import { AppContext } from "../Context/AppContext";
+import { AppContext } from "../Contexts/AppContext";
 import { useContext } from "react";
 import { months } from "../ui/Dropdown/config";
 
@@ -8,7 +8,7 @@ import { months } from "../ui/Dropdown/config";
 const WeeklySelector = () => {
   const { monthIndex, week, year } = useContext(AppContext)
 
-  return ( <div className="flex gap-3 items-center">
+  return ( <div className="flex flex-wrap jusitfy-between items-center gap-2  pb-2 -center custom-scrollbar">
     <Dropdown field={'monthIndex'} />
     <Dropdown field={'week'} />
     <Dropdown field={'year'} />

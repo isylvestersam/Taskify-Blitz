@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useContext } from "react";
-import { AppContext } from "../../Context/AppContext";
+import { AppContext } from "../../Contexts/AppContext";
 import getSetter from "../../util/getSetter";
 import { dropdownMenus, months, getWeeksForMonth } from "./config";
 
@@ -48,6 +48,7 @@ const Dropdown = ( { field } ) => {
     ref={dropdownRef}
     className=" relative w-fit" >
     <button
+    type="button"
       onClick={ (e) => {
         e.stopPropagation()
         handleToggleDropdown()
@@ -64,7 +65,7 @@ const Dropdown = ( { field } ) => {
     </button>
     {
       isOpen && (
-        <div className="absolute flex min-w-36 flex-col gap-1 items-start text-gray-200 bg-[#1D293D] py-1 px-1 text-sm rounded-md border border-gray-700 top-10 left-0">
+        <div className="absolute z-50 flex min-w-36 flex-col gap-1 items-start text-gray-200 bg-[#1D293D] py-1 px-1 text-sm rounded-md border border-gray-700 top-10 left-0">
           {
             menu.map((option) => (
               <button 

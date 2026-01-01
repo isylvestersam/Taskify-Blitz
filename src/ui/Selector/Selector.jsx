@@ -1,12 +1,11 @@
 import { useContext, useState } from "react";
 import Button from "../Button";
 import { timeframeData } from "./config";
-import { AppContext } from "../../Context/AppContext";
+import { AppContext } from "../../Contexts/AppContext";
 
 
 const Selector = () => {
   const {timeframe, setTimeframe, week, year, month} = useContext(AppContext)
-  console.log(timeframe, week, month, year);
   
 
   return ( <div>
