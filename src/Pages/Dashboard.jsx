@@ -11,8 +11,13 @@ import Selector from '../ui/Selector/Selector'
 import WeeklySelector from '../Components/WeeklySelector';
 import MonthlySelector from '../Components/MonthlySelector';
 import YearlySelector from '../Components/YearlySelector';
-import Showcase from '../Components/ShowCase';
+import Showcase from '../Components/Showcase';
 import AddNewTask from '../Components/Modal/TaskModal';
+import TitleandCategoryShowcase from '../ui/TitleAndCategoryShowcase';
+import OccurrenceShowcase from '../ui/OccurrenceShowcase';
+import MaxPointsShowcase from '../ui/MaxPointsShowcase';
+import DateShowcase from '../ui/DateShowcase';
+import PointsInput from '../ui/PointsInput';
 
 
 const Dashboard = () => {
@@ -31,6 +36,9 @@ const Dashboard = () => {
 
           </div>
             <AddNewTask />
+            <div className='my-12'>
+              <PointsInput />
+            </div>
       
   </div> );
 }

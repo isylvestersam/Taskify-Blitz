@@ -4,6 +4,7 @@ import Dashboard from './Pages/Dashboard'
 import { AppProvider } from './Contexts/AppContext'
 import TaskFormContextProvider from './Contexts/TaskFormContext'
 import TaskProvider from './Contexts/TaskContext'
+import { DailyEntriesProvider } from './Contexts/DailyEntriesContext.jsx'
 
 
 function App() {
@@ -13,7 +14,9 @@ function App() {
       <AppProvider>
         <TaskFormContextProvider>
           <TaskProvider>
-            <Dashboard />
+            <DailyEntriesProvider >
+              <Dashboard />
+            </DailyEntriesProvider>
           </TaskProvider>
         </TaskFormContextProvider>
       </AppProvider>
