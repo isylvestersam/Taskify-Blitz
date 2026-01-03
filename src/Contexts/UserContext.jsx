@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { supabase } from "../../supabaseClient";
 
 
 const UserContext = createContext();
@@ -9,7 +10,7 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user: currentUser } } = await supabaseClient.auth.getUser();
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
       setUser(currentUser);
       setLoading(false);
     }
@@ -24,8 +25,8 @@ export const UserProvider = ({ children }) => {
 
     return () => {
       authListener.subscription.unsubscribe();
-    }, []}
-  );
+    }
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, loading }}>

@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 export const AppContext = createContext();
 
@@ -22,7 +22,11 @@ const [isNoteModalOpen, setIsNoteModalOpen] = useState(false)
 const openTaskModal = () => setIsTaskModalOpen(true)
 const closeTaskModal = () => setIsTaskModalOpen(false)
 
-const openNoteModal = () => setIsNoteModalOpen(true)
+const openNoteModal = () => {
+  setIsNoteModalOpen(true)
+  console.log("Note modal opened", isNoteModalOpen);
+
+}
 const closeNoteModal = () => setIsNoteModalOpen(false)
 
 
@@ -44,6 +48,15 @@ const closeNoteModal = () => setIsNoteModalOpen(false)
       { children }
     </AppContext.Provider>
 )
+}
+
+// Custom hook for using the AppContext
+export const useAppContext = () => {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("useAppContext must be used within an AppProvider");
+  }
+  return context;
 }
 
 

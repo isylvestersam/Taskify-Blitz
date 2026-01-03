@@ -18,6 +18,12 @@ import OccurrenceShowcase from '../ui/OccurrenceShowcase';
 import MaxPointsShowcase from '../ui/MaxPointsShowcase';
 import DateShowcase from '../ui/DateShowcase';
 import PointsInput from '../ui/PointsInput';
+import NotesInput from '../ui/NotesInput';
+import NoteModal from '../Components/Modal/NoteModal';
+import TaskHeader from '../Components/TaskHeader';
+import TimelineTag from '../ui/TimelineTag';
+import SumTotalShowcase from '../ui/SumTotalShowcase';
+import DataShowcase from '../Components/DataShowcase';
 
 
 const Dashboard = () => {
@@ -36,8 +42,9 @@ const Dashboard = () => {
 
           </div>
             <AddNewTask />
+            <NoteModal />
             <div className='my-12'>
-              <PointsInput />
+              <DataShowcase />
             </div>
       
   </div> );

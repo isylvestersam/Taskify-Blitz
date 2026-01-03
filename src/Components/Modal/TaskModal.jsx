@@ -43,7 +43,7 @@ const TaskModal = () => {
     confirmBtn="Create Task"
     onConfirm={submitFunc}
   >
-    <div className="py-4 px-7">
+    <div className="py-4 px-5">
       <h3 className="text-amber-400 mb-7 text-xl font-medium">Add New Task</h3>
 
       <div className="w-full flex flex-col gap-5 text-gray-200">

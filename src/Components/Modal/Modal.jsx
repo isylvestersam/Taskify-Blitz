@@ -34,7 +34,7 @@ const Modal = ({ open, onClose, children, confirmBtn = "Save", onConfirm }) => {
       {/* Modal content */}
       <form 
         onSubmit={handleSubmit}
-        className="relative bg-slate-900 w-[80%] max-h-[90vh] lg:w-[40%] rounded-xl shadow-xl px-5 py-7 flex flex-col overflow-auto">
+        className="relative bg-slate-900 w-[80%] max-h-[90vh] lg:w-[40%] rounded-xl shadow-xl px-3 py-7 flex flex-col overflow-auto">
         {/* Body */}
         <div className="flex-1 overflow-auto mb-4 scrollbar-auto">{children}</div>
 
@@ -43,7 +43,7 @@ const Modal = ({ open, onClose, children, confirmBtn = "Save", onConfirm }) => {
           <button
             type="button"
             onClick={onClose}
-            className="bg-white text-red-500 px-3 py-2 rounded-md hover:bg-slate-300 w-full"
+            className="bg-white text-slate-400 hover:text-red-500 px-3 py-2 rounded-md hover:bg-slate-300 w-full"
           >
             Cancel
           </button>

@@ -5,6 +5,7 @@ import { AppProvider } from './Contexts/AppContext'
 import TaskFormContextProvider from './Contexts/TaskFormContext'
 import TaskProvider from './Contexts/TaskContext'
 import { DailyEntriesProvider } from './Contexts/DailyEntriesContext.jsx'
+import { UserProvider } from './Contexts/UserContext.jsx'
 
 
 function App() {
@@ -12,14 +13,17 @@ function App() {
   return (
     
       <AppProvider>
-        <TaskFormContextProvider>
-          <TaskProvider>
-            <DailyEntriesProvider >
-              <Dashboard />
-            </DailyEntriesProvider>
-          </TaskProvider>
-        </TaskFormContextProvider>
-      </AppProvider>
+  <UserProvider>
+    <TaskFormContextProvider>
+      <TaskProvider>
+        <DailyEntriesProvider>
+          <Dashboard />
+        </DailyEntriesProvider>
+      </TaskProvider>
+    </TaskFormContextProvider>
+  </UserProvider>
+</AppProvider>
+
 
   )
 }

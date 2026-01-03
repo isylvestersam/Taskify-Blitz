@@ -1,6 +1,7 @@
-import { createContext, useContext, useReducer, useState } from 'react';
+import { createContext, useContext, useReducer, useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
 import { validateCreateTask, validateEditTask } from '../Validators/taskvalidator';
+import { useUserContext } from './UserContext';
 
 
 const TaskContext = createContext(null);
@@ -16,6 +17,8 @@ const TaskContext = createContext(null);
   // Reducer Function
   const taskReducer = (state, action) => {
     switch (action.type) {
+      case 'SET_TASKS':
+        return action.payload;
       case ACTIONS.CREATE_TASK:
         return [
           ...state,
@@ -38,15 +41,39 @@ const TaskContext = createContext(null);
 
   // Provider
   const TaskProvider = ({ children }) => {
+  const { user } = useUserContext();
   const [tasks, dispatch] = useReducer(taskReducer, [])
+  console.log(user);
+  
 
+
+  // Fetch tasks from Supabase on mount
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchTasks = async () => {
+      const { data, error } = await supabase
+        .from('tasks')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('is_active', true)
+
+        if (error) {
+          console.error('Error fetching tasks:', error);
+        } else {
+          dispatch({ type: 'SET_TASKS', payload: data });
+        } 
+    };
+
+    fetchTasks();
+  }, [user]);
+
+  // Create Task
   const createTask = async (task) => {
+    if (!user) return { success: false, error: 'User not authenticated' }
+
     const validation = validateCreateTask(task);
-    console.log('Validation result:', validateCreateTask(task))
-
     if (!validation.success) return validation
-
-    const { data: { user } } = await supabase.auth.getUser();
 
     // Insert into Supabase
     const { data, error } = await supabase
