@@ -1,14 +1,13 @@
 import { useState } from "react";
 
-const PasswordSetter = () => {
-  const [isProtected, setIsProtected] = useState(false);
+const PasswordSetter = ({ isProtected = false, onChange }) => {
 
   return ( <div className="flex flex-col gap-1 mt-5 bg-slate-800 py-3 px-4 rounded-md border border-slate-700">
     <label className="flex items-center gap-2 hover:cursor-pointer ">
       <input 
         type="checkbox"
         checked={isProtected}
-        onChange={(e) => setIsProtected(e.target.checked)}
+        onChange={(e) => onChange(e.target.checked)}
         className="w-4 h-4 accent-amber-500 hover:cursor-pointer"
       />
       <span className="flex items-center gap-1 text-sm text-slate-200">

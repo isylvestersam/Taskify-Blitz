@@ -10,9 +10,11 @@ import AddNewTask from '../Components/Modal/TaskModal';
 import NoteModal from '../Components/Modal/NoteModal';
 import DataShowcase from '../Components/DataShowcase';
 import { useDailyEntriesContext } from '../Contexts/DailyEntriesContext';
+import { createRoutesFromElements } from 'react-router-dom';
 
 
 const Dashboard = () => {
+  const { noteModalMode } = useDailyEntriesContext();
   
 
   return ( <div className='container w-full flex flex-col mx-auto pt-5 px-4 md:px-8 lg:px-12 pb-92'>
@@ -30,7 +32,9 @@ const Dashboard = () => {
 
           </div>
             <AddNewTask />
-            <NoteModal />
+            <NoteModal 
+            mode={noteModalMode}
+            />
             <div className='my-12'>
               <DataShowcase />
             </div>

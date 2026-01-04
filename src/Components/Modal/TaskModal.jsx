@@ -39,7 +39,10 @@ const TaskModal = () => {
 
   return ( <Modal
     open={isTaskModalOpen}
-    onClose={closeTaskModal}
+    onClose={() => {
+      resetForm()
+      closeTaskModal()
+    }}
     confirmBtn="Create Task"
     onConfirm={submitFunc}
   >

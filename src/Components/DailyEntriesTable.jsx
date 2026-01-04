@@ -67,6 +67,8 @@ const DailyEntriesTable = () => {
           const rawDate = new Date(entries[0].day.date);
           const weekday = rawDate.toLocaleDateString('en-US', { weekday: 'short' });
           const fullDate = rawDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          const day = entries[0].day;
+          if (!day) return null; // Safety check
 
           return (
             <tr key={dayId}>
@@ -83,7 +85,7 @@ const DailyEntriesTable = () => {
                         value={ entry.points ?? '' }
                         disabled={!entry.is_editable}
                         onChange={val => updatePoints(entry.day_id, entry.task_id, val)}
-                        className="w-16 text-center bg-slate-700 rounded-md"
+                        className={`w-16 text-center bg-slate-700 rounded-md ${entry.is_editable ? 'hover:bg-slate-600 focus:bg-slate-600 cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
                       />
                     ) : (
                       "—"
@@ -97,7 +99,12 @@ const DailyEntriesTable = () => {
           weekly={false}
           value={getDayTotal(entries)}
         />
-        <NotesInput />
+        <NotesInput 
+          isContainNote={!!day.note}
+          isNoteProtected={day.is_protected}
+          noteContent={day.note}
+          onOpen={() => openNoteModal(entries[0])}
+        />
       </td>
     </tr>
   );

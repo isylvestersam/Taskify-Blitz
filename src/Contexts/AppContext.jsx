@@ -18,16 +18,19 @@ export const AppProvider = ({ children }) => {
   // Modals
 const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
 const [isNoteModalOpen, setIsNoteModalOpen] = useState(false)
+const [currentNoteEntry, setCurrentNoteEntry] = useState(null)
 
 const openTaskModal = () => setIsTaskModalOpen(true)
 const closeTaskModal = () => setIsTaskModalOpen(false)
 
-const openNoteModal = () => {
+const openNoteModal = (entry) => {
+  setCurrentNoteEntry(entry)
   setIsNoteModalOpen(true)
-  console.log("Note modal opened", isNoteModalOpen);
-
 }
-const closeNoteModal = () => setIsNoteModalOpen(false)
+const closeNoteModal = () => {
+  setIsNoteModalOpen(false)
+  setCurrentNoteEntry(null)
+}
 
 
   return (
@@ -41,7 +44,7 @@ const closeNoteModal = () => setIsNoteModalOpen(false)
         day, setDay,
         specificDays, setSpecificDays,
         openDropdown, setOpenDropdown,
-        isNoteModalOpen, openNoteModal, closeNoteModal,
+        isNoteModalOpen, openNoteModal, closeNoteModal, setCurrentNoteEntry, currentNoteEntry,
         isTaskModalOpen, openTaskModal, closeTaskModal
         }}
       >

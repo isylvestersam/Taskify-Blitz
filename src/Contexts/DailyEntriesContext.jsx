@@ -190,22 +190,39 @@ export const DailyEntriesProvider = ({ children }) => {
   /* =========================
     Update notes
   ========================= */
-  const updateNote = async (day_id, note, isProtected = false) => {
+  const updateNote = async (dayId, note, isProtected = false) => {
     setDailyEntries(prev =>
       prev.map(e =>
-        e.day_id === day_id
-          ? { ...e, note, is_protected: isProtected }
+        e.day_id === dayId
+          ? {
+              ...e,
+              day: {
+                ...e.day,
+                note,
+                is_protected: isProtected,
+              },
+            }
           : e
       )
     );
 
-    const { error } = await supabase
-      .from("daily_entries")
-      .update({ note, is_protected: isProtected })
-      .eq("day_id", day_id)
-      .eq("user_id", user.id);
 
-    if (error) console.error("Failed to update note:", error);
+    const { data, error } = await supabase
+      .from("days")
+      .update({ note, is_protected: isProtected })
+      .eq("id", dayId)
+      .eq("user_id", user.id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Failed to update note:", error);
+      return
+    }
+
+    if (!data || data.length === 0) {
+      console.warn("Update ran but no rows were updated");
+    }
   };
 
   /* =========================
