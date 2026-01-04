@@ -1,7 +1,9 @@
-import { useEffect } from "react"
+import { use, useEffect } from "react"
 import { createPortal } from "react-dom"
 
 const Modal = ({ open, onClose, children, confirmBtn = "Save", onConfirm }) => {
+
+  
   
   // Disable Scroll when modal is open
   useEffect(() => {
@@ -34,7 +36,7 @@ const Modal = ({ open, onClose, children, confirmBtn = "Save", onConfirm }) => {
       {/* Modal content */}
       <form 
         onSubmit={handleSubmit}
-        className="relative bg-slate-900 w-[80%] max-h-[90vh] lg:w-[40%] rounded-xl shadow-xl px-3 py-7 flex flex-col overflow-auto">
+        className="relative bg-slate-900 w-[80%] max-h-[90vh] lg:w-[40%] rounded-xl shadow-xl px-3 py-7 flex flex-col ">
         {/* Body */}
         <div className="flex-1 overflow-auto mb-4 scrollbar-auto">{children}</div>
 

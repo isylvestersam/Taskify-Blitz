@@ -7,7 +7,7 @@ export const validateCreateTask = (task) => {
   }
 
   if (!task.category || task.category.trim() === '') {
-    return { success: false, error: 'Task must have a category' };
+    task.category = 'General';
   }
 
   if (!task.maxPoints || typeof task.maxPoints !== 'number' || task.maxPoints <= 0) {
@@ -26,7 +26,8 @@ export const validateCreateTask = (task) => {
 
   // Set defaults
   if (!task.color) task.color = '#5C6AC4';
-  if (!task.occurrence.days) task.occurrence.days = [];
+  if (!task.occurrence.days) task.occurrence.days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  if (task.occurrence.type === 'Daily') task.occurrence.days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
   return { success: true, task }; // return the potentially updated task
 }

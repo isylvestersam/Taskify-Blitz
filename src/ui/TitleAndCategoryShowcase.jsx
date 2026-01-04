@@ -1,7 +1,7 @@
 
 
 const TitleandCategoryShowcase = ({ color, name, category }) => {
-  return ( <div className="flex gap-4 overflow-auto">
+  return ( <div className="flex gap-4 overflow-auto text-left">
     <div className={`w-1 rounded-sm`} 
     style={{ backgroundColor: color }} ></div>
     <div>

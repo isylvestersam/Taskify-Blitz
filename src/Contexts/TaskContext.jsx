@@ -43,8 +43,6 @@ const TaskContext = createContext(null);
   const TaskProvider = ({ children }) => {
   const { user } = useUserContext();
   const [tasks, dispatch] = useReducer(taskReducer, [])
-  console.log(user);
-  
 
 
   // Fetch tasks from Supabase on mount
@@ -79,7 +77,8 @@ const TaskContext = createContext(null);
     const { data, error } = await supabase
       .from('tasks')
       .insert([{ ...task,
-        user_id: user.id
+        user_id: user.id,
+        is_active: true
       }])
       .select()
       .single();
@@ -125,7 +124,7 @@ const TaskContext = createContext(null);
     // Delete from Supabase
     const { error } = await supabase
     .from('tasks')
-    .delete()
+    .update({ is_active: false })
     .eq('id', id)
 
     if (error) return { success: false, error: error.message }

@@ -13,6 +13,8 @@ export const DailyEntriesProvider = ({ children }) => {
   const [dailyEntries, setDailyEntries] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
+
   // 🚀 SINGLE entry point
   useEffect(() => {
     if (!user || !tasks || tasks.length === 0) return;
@@ -28,7 +30,7 @@ export const DailyEntriesProvider = ({ children }) => {
       const todayStr = new Date().toISOString().split("T")[0];
 
       /* =========================
-         1️⃣ Fetch existing days
+      Fetch existing days
       ========================= */
       const { data: existingDays, error: fetchDaysError } = await supabase
         .from("days")
@@ -37,12 +39,13 @@ export const DailyEntriesProvider = ({ children }) => {
         .gte("date", mondayStr)
         .lte("date", sunday.toISOString().split("T")[0]);
 
+
       if (fetchDaysError) throw fetchDaysError;
 
       const allDays = [];
 
       /* =========================
-         2️⃣ UPSERT days safely
+      2️⃣ UPSERT days safely
       ========================= */
       for (let d = new Date(monday); d <= sunday; d.setDate(d.getDate() + 1)) {
         const iso = d.toISOString().split("T")[0];
@@ -87,22 +90,39 @@ export const DailyEntriesProvider = ({ children }) => {
 
 
       /* =========================
-         3️⃣ Create daily entries
+      3️⃣ Create daily entries
       ========================= */
       const entriesToInsert = [];
 
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // normalize to start of local day
+
+
       allDays.forEach(day => {
+        const dayDate = new Date(day.date)
+        dayDate.setHours(0, 0, 0, 0); // normalize to start of day
+        const weekday = dayDate
+        .toLocaleDateString("en-US", { weekday: "short" })
+        .toLowerCase();
+
         tasks.forEach(task => {
           const key = `${day.id}-${task.id}`;
-
           if (existingSet.has(key)) return;
+
+          const occursOnDay = task.occurrence.days?.some(d => 
+            d.toLowerCase().startsWith(weekday)  // matches 'Mon' with 'mon'
+          );
+
+          const isToday = day.date === todayStr; // todayStr already = new Date().toISOString().split("T")[0]
+
+
 
           entriesToInsert.push({
             day_id: day.id,
             task_id: task.id,
             user_id: user.id,
             points: 0,
-            is_editable: day.date === todayStr,
+            is_editable: occursOnDay && isToday,
             note: "",
             is_protected: false,
           });
@@ -122,7 +142,7 @@ export const DailyEntriesProvider = ({ children }) => {
       }
 
       /* =========================
-         4️⃣ Fetch final weekly data
+        Fetch final weekly data
       ========================= */
       const { data: weekEntries, error: fetchEntriesError } = await supabase
         .from("daily_entries")
@@ -141,7 +161,7 @@ export const DailyEntriesProvider = ({ children }) => {
   };
 
   /* =========================
-     Update points (today only)
+    Update points (today only)
   ========================= */
   const updatePoints = async (day_id, task_id, points) => {
     const entry = dailyEntries.find(
@@ -168,7 +188,7 @@ export const DailyEntriesProvider = ({ children }) => {
   };
 
   /* =========================
-     Update notes
+    Update notes
   ========================= */
   const updateNote = async (day_id, note, isProtected = false) => {
     setDailyEntries(prev =>
@@ -189,7 +209,7 @@ export const DailyEntriesProvider = ({ children }) => {
   };
 
   /* =========================
-     Auto-zero past days
+    Auto-zero past days
   ========================= */
   const autoZeroMissedDays = () => {
     const todayStr = new Date().toISOString().split("T")[0];

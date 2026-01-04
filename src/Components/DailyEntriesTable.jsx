@@ -5,6 +5,8 @@ import { useTasks } from "../Contexts/TaskContext";
 import { useAppContext } from "../Contexts/AppContext";
 import TimelineTag from "../ui/TimelineTag";
 import DateShowcase from "../ui/DateShowcase";
+import SumTotalShowcase from "../ui/SumTotalShowcase";
+import NotesInput from "../ui/NotesInput";
 
 const DailyEntriesTable = () => {
   const { dailyEntries, updatePoints } = useDailyEntriesContext();
@@ -35,10 +37,10 @@ const DailyEntriesTable = () => {
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full table-auto border-collapse text-slate-200">
-        <thead className="bg-linear-to-br from-slate-800 to-slate-900 border border-slate-600/50 text-left text-slate-200">
-          <tr className="">
-            <th className=" px-3 py-3 min-w-40 max-w-40 text-center">
+      <table className="w-full table-auto rounded-3xl border-collapse text-slate-200 rounded-tl-3xl">
+        <thead className="bg-linear-to-br from-slate-800 to-slate-900 border border-slate-600/50 text-left text-slate-200 rounded-tl-3xl">
+          <tr className="rounded-tl-3xl">
+            <th className=" px-3 py-3 min-w-40 max-w-40 text-center  rounded-tl-3xl">
               <TimelineTag
                 image='/images/calendar.png'
                 title='TIMELINE'
@@ -60,7 +62,7 @@ const DailyEntriesTable = () => {
           </tr>
         </thead>
 
-        <tbody>
+        <tbody className="rounded-3xl">
         {Object.entries(entriesByDay).map(([dayId, entries], index) => {
           const rawDate = new Date(entries[0].day.date);
           const weekday = rawDate.toLocaleDateString('en-US', { weekday: 'short' });
@@ -78,7 +80,7 @@ const DailyEntriesTable = () => {
                   <td key={task.id} className="border border-slate-400/10 px-2 py-1 text-center">
                     {entry ? (
                       <PointsInput
-                        value={entry.points}
+                        value={ entry.points ?? '' }
                         disabled={!entry.is_editable}
                         onChange={val => updatePoints(entry.day_id, entry.task_id, val)}
                         className="w-16 text-center bg-slate-700 rounded-md"
@@ -90,8 +92,12 @@ const DailyEntriesTable = () => {
                 );
               })}
 
-      <td className=" border border-slate-600/40 px-3 py-2 text-center font-semibold">
-        {getDayTotal(entries)}
+      <td className=" border flex flex-col gap-2 border-slate-600/40 px-3 py-2 text-center font-semibold">
+        <SumTotalShowcase
+          weekly={false}
+          value={getDayTotal(entries)}
+        />
+        <NotesInput />
       </td>
     </tr>
   );
@@ -100,14 +106,17 @@ const DailyEntriesTable = () => {
 
           {/* Weekly Total Row */}
           <tr className="bg-slate-900 font-bold">
-            <td className=" px-3 py-2">Weekly Total</td>
+            <td className=" px-5 py-2 h-25 text-transparent">Weekly Total</td>
             {weeklyTotals.map((total, idx) => (
-              <td key={idx} className=" px-3 py-2 text-center">
+              <td key={idx} className=" px-3 py-2 text-center text-transparent">
                 {total}
               </td>
             ))}
-            <td className="border px-3 py-2 text-center">
-              {weeklyTotals.reduce((sum, val) => sum + val, 0)}
+            <td className="border border-slate-600/40 px-3 py-2 text-center">
+              <SumTotalShowcase
+                weekly={true}
+                value={weeklyTotals.reduce((sum, val) => sum + val, 0)}
+              />
             </td>
           </tr>
         </tbody>

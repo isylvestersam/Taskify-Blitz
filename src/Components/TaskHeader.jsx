@@ -5,7 +5,6 @@ import TitleandCategoryShowcase from "../ui/TitleAndCategoryShowcase";
 
 const TaskHeader = ( { task } ) => {
   // color, name, category, occurrence, maxPoints
-  console.log(task);
   
 
   return ( <div className="flex flex-col gap-3 w-full">

@@ -62,7 +62,7 @@ const TaskModal = () => {
             onChange={(e) => setCategory(e.target.value) }
             type="text" 
             className="border placeholder:text-gray-400/40 placeholder:text-sm py-1 px-3 w-full border-slate-500 rounded-md" 
-            placeholder="e.g Fitness" />
+            placeholder="General" />
         </label>
         <label >
           <p className="text-gray-200 mb-1 text-sm">Max Points</p>
@@ -97,7 +97,7 @@ const TaskModal = () => {
               <Dropdown 
                 field={'day'} 
                 width='full'
-                value={occurrenceDays[0] || ''}
+                value={occurrenceDays[0]}
                 onChange={(val) => setOccurrenceDays([val])}
                 />
             </div>
