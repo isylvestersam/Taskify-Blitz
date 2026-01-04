@@ -53,7 +53,7 @@ const NoteModal = ({}) => {
     onConfirm={submitFunc}
   >
     {
-      !currentNoteEntry?.day?.is_protected || is (
+      !currentNoteEntry?.day?.is_protected || isUnlocked ? (
         // Editable Note View
         <div className="py-0 px-5">
 
