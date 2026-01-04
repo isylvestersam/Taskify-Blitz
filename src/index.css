@@ -93,4 +93,28 @@ button {
   -moz-appearance: textfield;
 }
 
+/* In your CSS file */
+.custom-scrollbar {
+  overflow: auto;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #3b82f6 #1e293b; /* thumb color / track color */
+}
+
+/* Chrome, Edge, Safari */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #1e293b; /* track color */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #3b82f6; /* thumb color */
+  border-radius: 10px;
+  border: 2px solid #1e293b; /* optional for padding around thumb */
+}
+
+
 

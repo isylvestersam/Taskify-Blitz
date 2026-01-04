@@ -16,7 +16,7 @@ const TaskHeader = ( { task } ) => {
     />
     <div className="flex flex-1 border-b border-b-slate-800 " ></div>
     <div className="flex items-center justify-between w-full gap-3">
-      <OccurrenceShowcase />
+      <OccurrenceShowcase task={task} />
       <MaxPointsShowcase 
         maxPoints={task.maxPoints}
         />

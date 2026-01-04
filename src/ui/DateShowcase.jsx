@@ -1,13 +1,13 @@
 
 
-const DateShowcase = ( { date } ) => {
-  return ( <div className="flex gap-3 items-center">
+const DateShowcase = ( { weekday, fullDate } ) => {
+  return ( <div className="flex gap-3 items-center py-3">
     <div className="bg-linear-to-br from-slate-700 shadow-lg to-slate-800 text-amber-400 font-medium h-9 w-9 flex items-center justify-center rounded-lg" >
-      T
+      {weekday.charAt(0)}
     </div>
     <div>
-      <p className="text-slate-600 text-sm font-medium">THU</p>
-      <p className="text-white font-semibold whitespace-pre-wrap">Sep 5, 2026</p>
+      <p className="text-slate-500 font-medium"> {weekday} </p>
+      <p className="text-white text-sm font-semibold whitespace-pre-wrap">{fullDate}</p>
     </div>
   </div> );
 }
