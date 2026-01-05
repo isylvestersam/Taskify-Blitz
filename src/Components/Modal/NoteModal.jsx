@@ -15,14 +15,21 @@ const NoteModal = ({}) => {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
+
   useEffect(() => {
     if (currentNoteEntry?.day) {
       setNoteContent(currentNoteEntry.day.note || "");
       setIsProtected(!!currentNoteEntry.day.is_protected);
+
+      setIsUnlocked(false);
+      setPasswordInput("");
+      setPasswordError(false);
     }
   }, [currentNoteEntry])
 
   function submitFunc() {
+    if (!currentNoteEntry?.day) return;
+
     if (currentNoteEntry?.day) {
       updateNote(
         currentNoteEntry.day_id,
@@ -33,8 +40,13 @@ const NoteModal = ({}) => {
   }
 
   async function handleUnlock() {
-    // Placeholder for password verification logic
-    const correctPassword = "password123"; 
+    if (!passwordInput.trim()){
+      setPasswordError(true);
+      return;
+    }
+      
+
+    const correctPassword = "123"; 
     if (passwordInput === correctPassword) {
       setIsUnlocked(true);
       setPasswordError(false);
@@ -43,17 +55,20 @@ const NoteModal = ({}) => {
     }
   }
 
-  const isNoteProtected = currentNoteEntry?.day?.is_protected;
+  const wasProtected = !!currentNoteEntry?.day?.is_protected;
+  const canEdit = !wasProtected || isUnlocked;
 
 
   return (<Modal
     open={isNoteModalOpen}
     onClose={closeNoteModal}
-    confirmBtn="Save Note"
-    onConfirm={submitFunc}
+    confirmBtn={ canEdit ? "Save Note" : "Unlock Note" }
+    onConfirm={
+      canEdit ? submitFunc : handleUnlock
+    }
   >
     {
-      !currentNoteEntry?.day?.is_protected || isUnlocked ? (
+      canEdit ? (
         // Editable Note View
         <div className="py-0 px-5">
 
@@ -92,16 +107,25 @@ const NoteModal = ({}) => {
         <div className="mt-4 mb-2">
           <label className="text-slate-300 flex flex-col gap-2 text-sm">
             Enter Password
-            <input type="password" className="bg-slate-700 h-12 rounded-lg border border-slate-600 px-4 py-0.5 text-xl text-white" />
+            <input 
+              value={passwordInput}
+              onChange={e => setPasswordInput(e.target.value)}
+            type="password" className="bg-slate-700 h-12 rounded-lg border border-slate-600 px-4 py-0.5 text-xl text-white" />
           </label>
         </div>
 
-        <span className="flex items-center mb-2 gap-1">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="red" className="size-4 stroke-red-400">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-          </svg>
-          <p className="text-red-400 text-sm">Incorrect Password</p>
-        </span>
+        {/* Password Error */}
+        {
+          passwordError && (
+            <span className="flex items-center mb-2 gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="red" className="size-4 stroke-red-400">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+              </svg>
+              <p className="text-red-400 text-sm">Incorrect Password</p>
+            </span>
+          )
+        }
+
 
         <span>
           <p className="text-slate-400 text-sm py-1">This note is password protected. Please enter your account password to view or edit the note.</p>

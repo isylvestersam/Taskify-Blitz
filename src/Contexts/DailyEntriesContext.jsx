@@ -115,16 +115,12 @@ export const DailyEntriesProvider = ({ children }) => {
 
           const isToday = day.date === todayStr; // todayStr already = new Date().toISOString().split("T")[0]
 
-
-
           entriesToInsert.push({
             day_id: day.id,
             task_id: task.id,
             user_id: user.id,
             points: 0,
             is_editable: occursOnDay && isToday,
-            note: "",
-            is_protected: false,
           });
         });
       });
@@ -133,10 +129,9 @@ export const DailyEntriesProvider = ({ children }) => {
       if (entriesToInsert.length > 0) {
         const { error } = await supabase
           .from("daily_entries")
-          .insert(entriesToInsert, {
-            onConflict: "day_id,task_id",
-            ignoreDuplicates: true,
-          });
+          .upsert(entriesToInsert, 
+            { onConflict: "day_id,task_id" }
+          );
 
         if (error) throw error;
       }
